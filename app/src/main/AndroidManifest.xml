@@ -10,12 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskMaster">
         <activity
+            android:name=".Settings"
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".taskDetail"
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".All_Tasks"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Add_Task"
             android:exported="true"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
