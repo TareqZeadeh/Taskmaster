@@ -21,3 +21,18 @@
 ![](lab-27-task2.png)
 ### task3
 ![](lab-27-task3.png)
+## ================================================
+
+## lab 28 
+### Adding RecyclerViews in main page.
+### main 
+![](lab-28-main.png)
+
+### When click on one of the tasks in the RecyclerViews , it will redirect you to task details with the task data.
+### task1
+![](lab-28-task1.png)
+### task2
+![](lab-28-task2.png)
+### The remaining tasks will be the same as task1 and task2. 
+
+ 
