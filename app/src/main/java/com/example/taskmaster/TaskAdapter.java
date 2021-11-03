@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>{
-    List<Task> tasks = new ArrayList<>();
+    List<Task> tasks;
 
 
-    public TaskAdapter(ArrayList<Task> tasks) {
+    public TaskAdapter(List<Task> tasks) {
         this.tasks = tasks;
 
     }

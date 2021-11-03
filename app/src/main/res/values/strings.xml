@@ -9,7 +9,7 @@
     <string name="task_title">Task title</string>
     <string name="do_something">Do Something</string>
     <string name="my_title">My Title</string>
-    <string name="total_tasks_0">Total Tasks : 0</string>
+    <string name="total_tasks_0">Total Tasks : </string>
     <string name="all_tasks_1">All Tasks</string>
     <string name="total_tasks">Total Tasks :</string>
     <string name="user_name">User Name</string>

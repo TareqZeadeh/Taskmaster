@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.296" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/taskTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.455" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/taskDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"

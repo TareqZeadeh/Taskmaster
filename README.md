@@ -34,5 +34,17 @@
 ### task2
 ![](lab-28-task2.png)
 ### The remaining tasks will be the same as task1 and task2. 
+## ================================================
+
+## lab 29 
+### Adding a database and view its content int the RecyclerViews in main page .
+### main 
+![](lab-29-main.png)
+
+### When click on one of the tasks in the RecyclerViews , it will redirect you to task details with the task data.
+### Do Work Task
+![](lab-29-doWorkTask.png)
+
+### The remaining tasks will be the same as Do Work Task . 
 
  
