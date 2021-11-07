@@ -46,5 +46,7 @@
 ![](lab-29-doWorkTask.png)
 
 ### The remaining tasks will be the same as Do Work Task . 
-
+## ================================================
+## lab 31
+### Adding Espresso tests in the application in [AppTests](app/src/androidTest/java/com/example/taskmaster/HomePageTests.java) 
  

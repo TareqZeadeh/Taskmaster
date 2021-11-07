@@ -21,9 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         List<Task> tasks ;
-
 //        tasks.add(new Task("Task1","first Task",State.NEW.toString()));
 //        tasks.add(new Task("Task2","second Task",State.ASSIGNED.toString()));
 //        tasks.add(new Task("Task3","third Task",State.COMPLETE.toString()));
