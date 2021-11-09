@@ -47,6 +47,14 @@
 
 ### The remaining tasks will be the same as Do Work Task . 
 ## ================================================
+
+
 ## lab 31
 ### Adding Espresso tests in the application in [AppTests](app/src/androidTest/java/com/example/taskmaster/HomePageTests.java) 
+## ================================================
+
+## lab 32
+### Adding a AWS DynamoDB Api to the App and view its content in RecyclerViews in main page .
+### main
+![](lab-32-main.png)
  

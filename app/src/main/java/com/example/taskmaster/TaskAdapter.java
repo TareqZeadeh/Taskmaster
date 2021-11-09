@@ -9,14 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.datastore.generated.model.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>{
-    List<Task> tasks;
+    List<com.amplifyframework.datastore.generated.model.Task> tasks;
 
 
-    public TaskAdapter(List<Task> tasks) {
+    public TaskAdapter(List<com.amplifyframework.datastore.generated.model.Task> tasks) {
         this.tasks = tasks;
 
     }
@@ -33,7 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.task = tasks.get(position);
         TextView textView = holder.itemView.findViewById(R.id.textViewfrag);
-        textView.setText(holder.task.title);
+        textView.setText(holder.task.getTitle());
     }
 
     @Override

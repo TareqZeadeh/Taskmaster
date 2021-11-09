@@ -67,4 +67,8 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.4.1-alpha03'
 
 
+    implementation 'com.amplifyframework:aws-api:1.24.0'
+    implementation 'com.amplifyframework:aws-datastore:1.24.0'
+
+
 }
