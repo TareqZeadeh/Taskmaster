@@ -17,10 +17,12 @@ import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +32,17 @@ public class MainActivity extends AppCompatActivity {
     List<Task> tasks ;
     RecyclerView recyclerView ;
     Handler handler;
+    String teamID = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-            Amplify.addPlugin(new AWSDataStorePlugin()); // stores records locally
-            Amplify.addPlugin(new AWSApiPlugin()); // stores things in DynamoDB and allows us to perform GraphQL queries
-            Amplify.configure(getApplicationContext());
-
-            Log.i(TAG, "Initialized Amplify");
-        } catch (AmplifyException error) {
-            Log.e(TAG, "Could not initialize Amplify", error);
-        }
-
+        int counter = 0;
+        System.out.println("counter ====>>>>>>>>>>>>>>>>>>>>>>"+counter);
+        if(counter==0){amplifyConfig();}
+        counter++;
+        System.out.println("counter ====>>>>>>>>>>>>>>>>>>>>>>"+counter);
 
 //        tasks.add(new Task("Task1","first Task",State.NEW.toString()));
 //        tasks.add(new Task("Task2","second Task",State.ASSIGNED.toString()));
@@ -56,14 +55,20 @@ public class MainActivity extends AppCompatActivity {
 //        tasks = TaskDataBase.getInstance(getApplicationContext()).taskDAO().getAll();
 
 
+
+        // Calling the teams Seeding function============================
+        apiTeamSeeding();
+
         recyclerView = findViewById(R.id.rcv);
-        apiTaskGetter();
+//        apiTaskGetter();
 
         handler = new Handler(Looper.getMainLooper(),message -> {
             Log.i("In Handler","In Handler");
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new TaskAdapter(tasks));
-            recyclerView.getAdapter().notifyDataSetChanged();
+           if(tasks.size()>0){
+               recyclerView.setLayoutManager(new LinearLayoutManager(this));
+               recyclerView.setAdapter(new TaskAdapter(tasks));
+               recyclerView.getAdapter().notifyDataSetChanged();
+           }
             return false;
         });
 
@@ -102,12 +107,36 @@ public class MainActivity extends AppCompatActivity {
         String username = Preferences.getString("userName","Set a User Name");
         TextView text =findViewById(R.id.textView9);
         text.setText(username+"'s Tasks");
-        apiTaskGetter();
+
+//        apiTaskGetter();
 
     }
 
+    public void apiTeamGetter(){
+        SharedPreferences Preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String teamName = Preferences.getString("settingTeamName",null);
+        List<Team> apiTeams = new ArrayList<>();
+
+
+
+        Amplify.API.query(ModelQuery.list(Team.class),
+                teamReceived -> {
+                    for (Team team : teamReceived.getData()) {
+                        apiTeams.add(team);
+                    }
+                },
+                error -> {Log.e(TAG, "Error In Retrieving Teams", error);});
+
+
+        for(Team team : apiTeams){
+            if(team.getName().equals(teamName)){
+                teamID = team.getId();
+            }
+        }
+    }
     public void apiTaskGetter(){
-        Amplify.API.query(ModelQuery.list(com.amplifyframework.datastore.generated.model.Task.class),
+//        apiTeamGetter();
+        Amplify.API.query(ModelQuery.list(com.amplifyframework.datastore.generated.model.Task.class,Task.TEAM_ID.eq(teamID)),
                 taskReceived->{
             tasks = new ArrayList<>();
                     for(com.amplifyframework.datastore.generated.model.Task task : taskReceived.getData())
@@ -116,6 +145,34 @@ public class MainActivity extends AppCompatActivity {
                 },
                 error->{Log.e(TAG, "Error In Retrieving Tasks", error); });
     }
+    public void amplifyConfig() {
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSApiPlugin()); // stores things in DynamoDB and allows us to perform GraphQL queries
+            Amplify.configure(getApplicationContext());
+
+            Log.i(TAG, "Initialized Amplify");
+        } catch (AmplifyException error) {
+            Log.e(TAG, "Could not initialize Amplify", error);
+        }
+    }
+
+    public void apiTeamSeeding(){
+        String[] teams = getResources().getStringArray(R.array.teams_Names);
+
+        for (int i=0; i<teams.length; i++){
+            Team team= Team.builder().name(teams[i]).build();
+            Amplify.API.mutate(ModelMutation.create(team),
+//                    + teamSaved.getData().getName()
+                    teamSaved ->{ Log.i(TAG, "Team Is Saved => " );},
+                    error->{Log.e(TAG, "Team Is Not Saved => " + error.toString());});
+        }
+    }
+
+
+    }
+
+
 
 //    public void taskDetail(View view) {
 //    int id = view.getId();
@@ -125,4 +182,3 @@ public class MainActivity extends AppCompatActivity {
 //    intent.putExtra("task",task);
 //    startActivity(intent);
 //    }
-}
