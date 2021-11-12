@@ -80,10 +80,10 @@
         android:text="ADD TASK"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintHorizontal_bias="0.155"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.636" />
+        app:layout_constraintVertical_bias="0.793" />
 
     <TextView
         android:id="@+id/textView5"
@@ -93,9 +93,35 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.307"
+        app:layout_constraintHorizontal_bias="0.641"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.767" />
+        app:layout_constraintVertical_bias="0.801" />
+
+    <Spinner
+        android:id="@+id/statusSpin"
+        android:layout_width="177dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescription"
+        app:layout_constraintVertical_bias="0.152"
+        android:spinnerMode="dropdown"
+        android:entries="@array/status"/>
+
+    <Spinner
+        android:id="@+id/teamSpin"
+        android:layout_width="177dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescription"
+        app:layout_constraintVertical_bias="0.152"
+        android:spinnerMode="dropdown"
+        android:entries="@array/teams_Names"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

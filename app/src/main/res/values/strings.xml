@@ -21,6 +21,19 @@
     <string name="user_name_tasks">User Name Tasks</string>
     <string name="task">Task</string>
 
+    <string-array name="teams_Names">
+        <item>Team A</item>
+        <item>Team B</item>
+        <item>Team C</item>
+    </string-array>
+
+    <string-array name="status">
+        <item>NEW</item>
+        <item>ASSIGNED</item>
+        <item>IN_PROGRESS</item>
+        <item>COMPLETE</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

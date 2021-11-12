@@ -10,7 +10,7 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 50,
-              "description": "tareqhasankey"
+              "description": "thzkey"
             }
           }
         }
