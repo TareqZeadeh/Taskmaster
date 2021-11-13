@@ -1,18 +1,18 @@
 {
   "api": {
-    "amplifyDatasource": {
+    "tareq": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 50,
-              "description": "thzkey"
+              "description": "tareqhasankey"
             }
-          }
+          },
+          "additionalAuthenticationProviders": []
         }
       }
     }

@@ -57,4 +57,10 @@
 ### Adding a AWS DynamoDB Api to the App and view its content in RecyclerViews in main page .
 ### main
 ![](lab-32-main.png)
+## ================================================
+
+## lab 33
+### Adding a Team graphql with relation (one to many) with tasks to the App and view tasks depending on the chosen team in RecyclerViews in main page .
+### main
+![](lab-33-main.png)
  
