@@ -63,4 +63,7 @@
 ### Adding a Team graphql with relation (one to many) with tasks to the App and view tasks depending on the chosen team in RecyclerViews in main page .
 ### main
 ![](lab-33-main.png)
+## lab 34
+### Whin the APK is uploaded in Play Store I'll Share the link of ut.
+![](app-debug.apk)
  
