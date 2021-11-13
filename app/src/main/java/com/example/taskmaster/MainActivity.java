@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -32,16 +33,23 @@ public class MainActivity extends AppCompatActivity {
     List<Task> tasks ;
     RecyclerView recyclerView ;
     Handler handler;
+    Handler handler1;
     String teamID = "";
-
+    int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int counter = 0;
+        SharedPreferences preferences4 = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor4 = preferences4.edit();
+        editor4.putInt("counter",counter);
+        SharedPreferences Preferences1 = PreferenceManager.getDefaultSharedPreferences(this);
+        counter = Preferences1.getInt("counter",counter);
+
         System.out.println("counter ====>>>>>>>>>>>>>>>>>>>>>>"+counter);
         if(counter==0){amplifyConfig();}
         counter++;
+        editor4.putInt("counter",counter);
         System.out.println("counter ====>>>>>>>>>>>>>>>>>>>>>>"+counter);
 
 //        tasks.add(new Task("Task1","first Task",State.NEW.toString()));
@@ -57,11 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Calling the teams Seeding function============================
-        apiTeamSeeding();
+//        apiTeamSeeding();
 
+
+        apiTeamGetter();
         recyclerView = findViewById(R.id.rcv);
-//        apiTaskGetter();
 
+        handler1 = new Handler(Looper.getMainLooper(),message -> {
+            Log.i("In Handler","In Handler");
+            teamID = message.getData().getString("teamId");
+            apiTaskGetter(teamID);
+            return false;
+        });
         handler = new Handler(Looper.getMainLooper(),message -> {
             Log.i("In Handler","In Handler");
            if(tasks.size()>0){
@@ -100,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -107,8 +123,16 @@ public class MainActivity extends AppCompatActivity {
         String username = Preferences.getString("userName","Set a User Name");
         TextView text =findViewById(R.id.textView9);
         text.setText(username+"'s Tasks");
-
-//        apiTaskGetter();
+        apiTaskGetter(teamID);
+//        handler = new Handler(Looper.getMainLooper(),message -> {
+//            Log.i("In Handler","In Handler");
+//            if(tasks.size()>0){
+//                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//                recyclerView.setAdapter(new TaskAdapter(tasks));
+//                recyclerView.getAdapter().notifyDataSetChanged();
+//            }
+//            return false;
+//        });
 
     }
 
@@ -119,23 +143,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Amplify.API.query(ModelQuery.list(Team.class),
+        Amplify.API.query(ModelQuery.list(Team.class,Team.NAME.contains(teamName)),
                 teamReceived -> {
                     for (Team team : teamReceived.getData()) {
                         apiTeams.add(team);
                     }
+                    Bundle bundle = new Bundle();
+                    bundle.putString("teamId",apiTeams.get(0).getId());
+                    Message message = new Message();
+                    message.setData(bundle);
+                    handler1.sendMessage(message);
                 },
                 error -> {Log.e(TAG, "Error In Retrieving Teams", error);});
 
 
-        for(Team team : apiTeams){
-            if(team.getName().equals(teamName)){
-                teamID = team.getId();
-            }
-        }
+
     }
-    public void apiTaskGetter(){
-//        apiTeamGetter();
+    public void apiTaskGetter(String teamID){
+
         Amplify.API.query(ModelQuery.list(com.amplifyframework.datastore.generated.model.Task.class,Task.TEAM_ID.eq(teamID)),
                 taskReceived->{
             tasks = new ArrayList<>();

@@ -46,8 +46,9 @@ public class Settings extends AppCompatActivity {
                 editor2.putString("userName",username);
                 editor2.putString("settingTeamName",team);
                 editor2.apply();
-//                Intent intent = new Intent(Settings.this,MainActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(Settings.this,MainActivity.class);
+                startActivity(intent);
+//                finish();
             }
         });
 
