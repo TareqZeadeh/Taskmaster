@@ -33,11 +33,25 @@ public class Add_Task extends AppCompatActivity {
     private static final String TAG = "Add_Task";
     public static int c = 0;
     Handler handler;
+    private Spinner teamSpin;
+    private Spinner statusSpin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+        teamSpin = findViewById(R.id.teamSpin);
+        statusSpin = findViewById(R.id.statusSpin);
+        ArrayAdapter<CharSequence> teamAdapter = ArrayAdapter.createFromResource(this,
+                R.array.teams_Names, android.R.layout.simple_spinner_item);
+        teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        teamSpin.setAdapter(teamAdapter);
+
+
+        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(this,
+                R.array.status, android.R.layout.simple_spinner_item);
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpin.setAdapter(statusAdapter);
         handler = new Handler(Looper.myLooper(),message -> {
             String title = message.getData().getString("title");
             String teamID = message.getData().getString("teamId");
@@ -108,19 +122,9 @@ public class Add_Task extends AppCompatActivity {
     }
 
     public void addTask(View view){
-        Spinner teamSpin = findViewById(R.id.teamSpin);
-        Spinner statusSpin = findViewById(R.id.statusSpin);
-
-        ArrayAdapter<CharSequence> teamAdapter = ArrayAdapter.createFromResource(this,
-                R.array.teams_Names, android.R.layout.simple_spinner_item);
-        teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        teamSpin.setAdapter(teamAdapter);
 
 
-        ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(this,
-                R.array.status, android.R.layout.simple_spinner_item);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpin.setAdapter(statusAdapter);
+
 
 
         String status = statusSpin.getSelectedItem().toString();
