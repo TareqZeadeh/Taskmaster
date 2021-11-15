@@ -66,4 +66,17 @@
 ## lab 34
 ### Whin the APK is uploaded in Play Store I'll Share the link of ut.
 ![](app-debug.apk)
+## ================================================
+
+## lab 33
+### Adding Cognito Authentication to our app.
+### Sign In Page
+![](lab-36-signIn.png)
+### Sign Up Page
+![](lab-36-signUp.png)
+### Confirm User Page
+![](lab-36-confirmUser.png)
+### Main Page
+![](lab-36-main.png)
+
  
