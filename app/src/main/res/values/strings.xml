@@ -37,6 +37,8 @@
     <string name="your_password">Your_password</string>
     <string name="sign_in_page">Sign In Page</string>
     <string name="welcome_to_taskmaneger">Welcome To TaskManeger</string>
+    <string name="url_text">URL text</string>
+    <!--    <string name="textview">TextView</string>-->
 
     <string-array name="teams_Names">
         <item>Team A</item>
