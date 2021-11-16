@@ -9,5 +9,6 @@ type Task @model @key(name: "byTeam", fields: ["teamId"]) {
   body: String!
   state: String!
   teamId : ID!
+  fileKey: String
 }
 

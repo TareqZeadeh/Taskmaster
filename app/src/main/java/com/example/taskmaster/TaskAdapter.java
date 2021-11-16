@@ -35,7 +35,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.task = tasks.get(position);
         TextView textView = holder.itemView.findViewById(R.id.textViewfrag);
-//        if(holder.task != null)
             textView.setText(holder.task.getTitle());
     }
 
@@ -60,6 +59,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             intent.putExtra("title",task.getTitle());
             intent.putExtra("body",task.getBody());
             intent.putExtra("state",task.getState());
+            intent.putExtra("fileKey",task.getFileKey());
             view.getContext().startActivity(intent);
         }
     }
