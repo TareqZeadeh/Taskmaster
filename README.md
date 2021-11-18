@@ -81,11 +81,16 @@
 
 ## ================================================
 
-## lab 36
+## lab 37
 ### S3 Uploads: Adding the allow users to optionally select a file to attach to that task. If a user attaches a file to a task, that file should be uploaded to S3, and associated with that task, On the Task detail activity , the image will appear and a text contains the URL , when pressing on it will direct you the URL page .   
 ### Add Task Page
 ![](lab-37-add-task.png)
 ### Task Detail Page
 ![](lab-37-taskD.png)
+## ================================================
+
+## lab 38
+### Notifications Added.
+![lab-38-notification](lab-38-notification.png)
 
  
