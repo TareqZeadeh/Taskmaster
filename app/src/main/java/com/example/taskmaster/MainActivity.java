@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Calling the teams Seeding function============================
 //        apiTeamSeeding();
-
+        sendAnalyticsInfo(this.toString(),SignIn.class.toString());
 
         apiTeamGetter();
         recyclerView = findViewById(R.id.rcv);
@@ -314,6 +315,17 @@ public class MainActivity extends AppCompatActivity {
                 },
                 error -> Log.e("AuthDemo", "Failed to fetch user attributes.", error)
         );
+    }
+
+    public static void sendAnalyticsInfo(String current,String previous ){
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("Activity Change ")
+                .addProperty("Current Activity", current)
+                .addProperty("Previous Activity", previous)
+                .addProperty("Successful", true)
+                .build();
+
+        Amplify.Analytics.recordEvent(event);
     }
 }
 

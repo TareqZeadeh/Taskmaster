@@ -19,6 +19,8 @@ public class taskDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MainActivity.sendAnalyticsInfo(this.toString(),MainActivity.class.toString());
         setContentView(R.layout.activity_task_detail);
         Intent intent = getIntent();
 

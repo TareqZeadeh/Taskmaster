@@ -62,6 +62,9 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        MainActivity.sendAnalyticsInfo(this.toString(),MainActivity.class.toString());
+
         teamSpin = findViewById(R.id.teamSpin);
         statusSpin = findViewById(R.id.statusSpin);
         ArrayAdapter<CharSequence> teamAdapter = ArrayAdapter.createFromResource(this,
