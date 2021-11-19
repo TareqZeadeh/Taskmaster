@@ -92,5 +92,12 @@
 ## lab 38
 ### Notifications Added.
 ![lab-38-notification](lab-38-notification.png)
+## ================================================
+
+## lab 39
+### Analytics Added.
+![lab-39-analitics1](lab-39-analitics1.png)
+![lab-39-analitics2](lab-39-analitics2.png)
+
 
  
