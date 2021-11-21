@@ -57,11 +57,19 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
     private HandlePathOz handlePathOz;
     String fileName;
     Handler fileNameHandler;
+    Uri fileUri ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+        handlePathOz = new HandlePathOz(this, this);
+
+        if (getIntent().getClipData() != null) {
+            fileUri = getIntent().getClipData().getItemAt(0).getUri();
+            handlePathOz.getRealPath(fileUri);
+        }
 
         MainActivity.sendAnalyticsInfo(this.toString(),MainActivity.class.toString());
 
@@ -92,7 +100,7 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
             fileName = message.getData().getString("fileName1");
             return false;
         });
-        handlePathOz = new HandlePathOz(this, this);
+
 //        initHandlePathOz();
         Button uploadBtn = findViewById(R.id.uploadBtn);
         uploadBtn.setOnClickListener(view -> {
@@ -318,7 +326,9 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
                                 bundle.putString("fileName1",resultUrl.getUrl().toString());
                                 Message message = new Message();
                                 message.setData(bundle);
-                                fileNameHandler.sendMessage(message);},
+                                fileNameHandler.sendMessage(message);
+                                showToast();
+                                fileUri = null;},
                             error -> Log.e("MyAmplifyApp", "URL generation failure", error)
                     );
                 },
@@ -336,4 +346,16 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
             }
         }
     }
+
+    public void showToast() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast = Toast.makeText(getApplicationContext(), "The file has been added to the task", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+    }
+
+
 }
