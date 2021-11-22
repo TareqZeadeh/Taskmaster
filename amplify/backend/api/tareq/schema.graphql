@@ -10,5 +10,7 @@ type Task @model @key(name: "byTeam", fields: ["teamId"]) {
   state: String!
   teamId : ID!
   fileKey: String
+  lat : Float
+  lon : Float
 }
 

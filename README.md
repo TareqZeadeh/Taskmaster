@@ -103,6 +103,11 @@
 ## lab 41
 ### Intent Filter For sharing Is Added.
 ![lab-41-sharing](lab-41.png)
+## ================================================
+## lab 42
+### Location Added.
+![](lab-42-AD.png)
+![](lab-42-TD.png)
 
 
 

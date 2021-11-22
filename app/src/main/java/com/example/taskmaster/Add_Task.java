@@ -4,7 +4,7 @@ import static android.content.Intent.ACTION_PICK;
 import static android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 import static android.provider.MediaStore.Video.Media.INTERNAL_CONTENT_URI;
 import br.com.onimur.handlepathoz.HandlePathOzListener;
-
+import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +12,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +40,12 @@ import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -59,6 +69,20 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
     Handler fileNameHandler;
     Uri fileUri ;
 
+    private static final int PERMISSION_ID = 44;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private double latitude;
+    private double longitude;
+
+    private final LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+            Log.i(TAG, "The location is => " + mLastLocation);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +94,15 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
             fileUri = getIntent().getClipData().getItemAt(0).getUri();
             handlePathOz.getRealPath(fileUri);
         }
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        findViewById(R.id.latlonBTN).setOnClickListener(view -> {
+            getLastLocation();
+        });
+
+
+
 
         MainActivity.sendAnalyticsInfo(this.toString(),MainActivity.class.toString());
 
@@ -91,8 +124,9 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
             String body = message.getData().getString("body");
             String status = message.getData().getString("status");
             com.amplifyframework.datastore.generated.model.Task task = com.amplifyframework.datastore.generated.model.Task
-                    .builder().title(title).body(body).state(status).teamId(teamID).fileKey(fileName).build();
+                    .builder().title(title).body(body).state(status).teamId(teamID).lat(latitude).lon(longitude).fileKey(fileName).build();
             saveTaskHelper(task);
+            Log.i(TAG, "LATLON ==============================>>>>>>" + latitude+ "=====>" + longitude);
             return false;
         });
 
@@ -166,6 +200,7 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
 //        });
     }
 
+
     public void addTask(View view) {
 
 
@@ -214,6 +249,9 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
         int c = Preferences1.getInt("c", 0);
         TextView textView = findViewById(R.id.textView5);
         textView.setText("Total Tasks :" + c);
+        if (checkPermissions()) {
+            getLastLocation();
+        }
     }
 
     public void apiTaskSave(String title, String body, String status) {
@@ -345,6 +383,11 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
                 Log.i(TAG + " ==> onRequestPermissionsResult", "Error : Permission Field");
             }
         }
+        if (requestCode == PERMISSION_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            }
+        }
     }
 
     public void showToast() {
@@ -357,5 +400,76 @@ public class Add_Task extends AppCompatActivity implements HandlePathOzListener.
         });
     }
 
+//===================================================================================
+//====================================Location=======================================
+//===================================================================================
 
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        if (checkPermissions()) {
+
+            if (isLocationEnabled()) {
+
+                mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<Location> task) {
+
+                        Location location = task.getResult();
+
+                        if (location == null) {
+                            requestNewLocationData();
+                        } else {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Please turn on your location...", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        // If we want background location
+        // on Android 10.0 and higher,
+        // use:
+        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData() {
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5);
+        locationRequest.setFastestInterval(0);
+        locationRequest.setNumUpdates(1);
+
+        // setting LocationRequest
+        // on FusedLocationClient
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this); // this may or may not be needed
+        mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper());
+    }
 }
