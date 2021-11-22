@@ -1,5 +1,6 @@
 package com.example.taskmaster;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,19 +11,30 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class taskDetail extends AppCompatActivity {
+public class taskDetail extends AppCompatActivity  implements OnMapReadyCallback {
 
+    private double lat;
+    private double lon;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         MainActivity.sendAnalyticsInfo(this.toString(),MainActivity.class.toString());
         setContentView(R.layout.activity_task_detail);
         Intent intent = getIntent();
+        lat = intent.getDoubleExtra("lat",0);
+        lon = intent.getDoubleExtra("lon",0);
 
         String title = intent.getExtras().getString("title");
         TextView text = findViewById(R.id.textView7);
@@ -85,5 +97,25 @@ public class taskDetail extends AppCompatActivity {
 //            });
 //        }
 
+
+        //==========================================================
+        //==========================================================
+        //==========================================================
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        LatLng latLng = new LatLng(lat,lon);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+        googleMap.animateCamera(cameraUpdate);
+        googleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title("Current Location"));
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.setTrafficEnabled(true);
     }
 }
