@@ -101,6 +101,7 @@ public class taskDetail extends AppCompatActivity  implements OnMapReadyCallback
         //==========================================================
         //==========================================================
         //==========================================================
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
