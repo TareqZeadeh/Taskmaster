@@ -108,6 +108,11 @@
 ### Location Added.
 ![](lab-42-AD.png)
 ![](lab-42-TD.png)
+## ================================================
+## lab 43
+### Analytics Added.
+![](lab-43.png)
+
 
 
 
